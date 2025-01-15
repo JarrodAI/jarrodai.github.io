@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Added Google Fonts for cartoon style -->
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+ /* First, we'll create a video wrapper that will hold our background video */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Now we'll create an overlay that will be yellow and semi-transparent */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 225, 93, 0.85); /* This is your yellow color at 85% opacity */
+      z-index: -1;
+    }
+    body {
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Comic Neue', cursive;
+    }
+
+    .book-container {
+      position: relative;
+      width: 1200px;
+      height: 800px;
+      perspective: 2000px;
+    }
+
+    .book {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.5s;
+    }
+
+    .page {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: white;
+      transform-origin: right;
+      transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      box-sizing: border-box;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      backface-visibility: hidden;
+      display: none;
+      overflow: hidden;
+      border-radius: 30px; /* Rounded corners */
+      border: 4px solid #333; /* Comic-style border */
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .page-content {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 40px;
+      overflow-y: auto;
+      position: relative;
+      scrollbar-width: thin;
+      scrollbar-color: #FF6B6B #f0f0f0;
+      background: repeating-linear-gradient(
+        45deg,
+        #fff,
+        #fff 10px,
+        #f9f9f9 10px,
+        #f9f9f9 20px
+      );
+    }
+
+    .page-content::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    .page-content::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+
+    .page-content::-webkit-scrollbar-thumb {
+      background-color: #FF6B6B;
+      border-radius: 10px;
+      border: 3px solid #f0f0f0;
+    }
+
+    .page-content h2 {
+      font-family: 'Bangers', cursive;
+      font-size: 48px;
+      margin-top: 0;
+      margin-bottom: 40px;
+      color: #FF6B6B;
+      position: sticky;
+      top: 0;
+      background: white;
+      padding: 20px 0;
+      z-index: 1;
+      text-align: center;
+      text-shadow: 3px 3px 0 #333;
+      letter-spacing: 2px;
+    }
+
+    .page-content p {
+      font-family: 'Comic Neue', cursive;
+      font-size: 24px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      color: #333;
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      border: 2px solid #333;
+      box-shadow: 3px 3px 0 #333;
+    }
+
+    .page-number {
+      position: sticky;
+      bottom: 0;
+      right: 40px;
+      font-family: 'Architects Daughter', cursive;
+      color: #FF6B6B;
+      font-size: 24px;
+      background: white;
+      padding: 10px 20px;
+      text-align: right;
+      border-radius: 15px 15px 0 0;
+      border: 2px solid #333;
+      border-bottom: none;
+    }
+
+    .book-cover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #4ADEDE;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 48px;
+      text-align: center;
+      padding: 40px;
+      box-sizing: border-box;
+      box-shadow: 0 0 30px rgba(0,0,0,0.2);
+      z-index: 2;
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+      border: 8px solid #333;
+    }
+
+    .book-cover h1 {
+      font-family: 'Bangers', cursive;
+      font-size: 64px;
+      text-shadow: 4px 4px 0 #333;
+      letter-spacing: 3px;
+      margin: 0;
+    }
+
+    .navigation {
+      position: absolute;
+      bottom: -70px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    button {
+      padding: 15px 30px;
+      border: none;
+      background: #FF6B6B;
+      color: white;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: all 0.3s;
+      font-family: 'Comic Neue', cursive;
+      font-size: 20px;
+      font-weight: bold;
+      border: 3px solid #333;
+      box-shadow: 3px 3px 0 #333;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 5px 5px 0 #333;
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 3px 3px 0 #333;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .speech-bubble {
+      position: relative;
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 3px solid #333;
+    }
+
+    .speech-bubble:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border: 20px solid transparent;
+      border-top-color: #fff;
+      border-bottom: 0;
+      margin-left: -20px;
+      margin-bottom: -20px;
+    }
+  </style>
+</head>
+<body>
+<!-- Add these two new div elements right at the start of the body -->
+  <div class="video-background">
+    <!-- Replace the source with your video file -->
+    <video autoplay muted loop>
+      <source src="static.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+
+  <div class="book-container">
+    <div class="book">
+      <div class="book-cover">
+        <h1>My Cartoon Adventure!</h1>
+      </div>
+      <div class="page" id="page1">
+        <div class="page-content">
+          <h2>The Beginning!</h2>
+          <div class="speech-bubble">
+            <p>Hey there, cartoon fans! Welcome to the wackiest, most wonderful adventure book ever! 🎨</p>
+          </div>
+          <p>In a town called Squiggleton, where the clouds looked like cotton candy and trees danced in the breeze, lived a peculiar purple penguin named Pip. Pip loved wearing rainbow-colored bowties and telling jokes to the local butterflies! 🐧✨</p>
+          <p>Every morning, Pip would waddle down to the Giggly Garden, where flowers would laugh instead of growing! Can you imagine? A garden full of chuckling chrysanthemums and snickering sunflowers! 🌻</p>
+          <span class="page-number">1</span>
+        </div>
+      </div>
+      <div class="page" id="page2">
+        <div class="page-content">
+          <h2>The Big Surprise!</h2>
+          <p>One day, while Pip was practicing his silly walk (because every penguin needs a silly walk), he discovered a magical crayon that could draw things that came to life! 🖍️</p>
+          <p>"WOWEEE!" shouted Pip, jumping so high he almost touched the polka-dot clouds. "Think of all the colorful chaos we could create!" 🎨</p>
+          <div class="speech-bubble">
+            <p>But what should Pip draw first? A breakdancing banana? A tap-dancing turtle? Or maybe a saxophone-playing sandwich? 🎷</p>
+          </div>
+          <span class="page-number">2</span>
+        </div>
+      </div>
+      <div class="page" id="page3">
+        <div class="page-content">
+          <h2>The Grand Plan!</h2>
+          <p>Pip decided to draw the most spectacular thing ever - a FLYING PIZZA PALACE! It had pepperoni propellers and mozzarella motors! 🍕</p>
+          <div class="speech-bubble">
+            <p>"This is totally cheese-tastic!" declared Pip, as he watched his creation soar through the rainbow-sprinkled sky.</p>
+          </div>
+          <p>All the animals in Squiggleton gathered around to watch the amazing sight. Even the grumpy old sock puppet who lived under the bridge had to smile! 🧦</p>
+          <span class="page-number">3</span>
+        </div>
+      </div>
+      <div class="page" id="page4">
+        <div class="page-content">
+          <h2>The Silly Solution!</h2>
+          <div class="speech-bubble">
+            <p>But what happens when a flying pizza palace meets a cloud made of jellybeans? Let's find out! 🌈</p>
+          </div>
+          <p>SPLAT! BOOM! WIGGLE! The sky filled with colorful explosions of cheese and jellybeans! It was the most delicious fireworks show ever! 🎆</p>
+          <p>And that's how the annual Squiggleton Sky Candy Pizza Party became a tradition! Now every year, Pip draws a new flying food creation to celebrate! 🎉</p>
+          <span class="page-number">4</span>
+        </div>
+      </div>
+    </div>
+    <div class="navigation">
+      <button onclick="previousPage()" id="prevBtn" disabled>← Previous Page</button>
+      <button onclick="nextPage()" id="nextBtn">Next Page →</button>
+    </div>
+  </div>
+
+  <script>
+    let currentPage = 0;
+    const pages = document.querySelectorAll('.page');
+    const book = document.querySelector('.book');
+    const cover = document.querySelector('.book-cover');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    function updateButtons() {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === pages.length;
+    }
+
+    function nextPage() {
+      if (currentPage === 0) {
+        cover.style.transform = 'rotateY(-180deg)';
+        cover.style.zIndex = '0';
+        setTimeout(() => {
+          pages[0].classList.add('active');
+        }, 300);
+        currentPage++;
+      } else if (currentPage <= pages.length) {
+        const prevPage = pages[currentPage - 1];
+        const nextPage = pages[currentPage];
+        
+        prevPage.classList.add('flipped');
+        if (nextPage) {
+          nextPage.classList.add('active');
+        }
+        currentPage++;
+      }
+      updateButtons();
+    }
+
+    function previousPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        if (currentPage === 0) {
+          cover.style.transform = 'rotateY(0deg)';
+          cover.style.zIndex = '2';
+          pages[0].classList.remove('active');
+        } else {
+          const currentPageElement = pages[currentPage - 1];
+          const nextPageElement = pages[currentPage];
+          
+          currentPageElement.classList.remove('flipped');
+          if (nextPageElement) {
+            nextPageElement.classList.remove('active');
+          }
+        }
+        updateButtons();
+      }
+    }
+
+    window.onload = () => {
+      updateButtons();
+    };
+  </script>
+</body>
+</html>
