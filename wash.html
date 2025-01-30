@@ -203,167 +203,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-    </style>
-</head>
-<body>
-    <!-- Floating Clouds -->
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-    <div class="cloud cloud-3"></div>
-
-    <!-- Loading Animation -->
-    <div class="loader">
-        <div class="loader-inner"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <div class="container">
-            <a class="navbar-brand gradient-text" href="#">BostonWashFold</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-custom ms-2" data-bs-toggle="modal" data-bs-target="#scheduleModal">
-                            Schedule Now
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero d-flex align-items-center">
-        <div class="container">
-            <div class="row align-items-center parallax-section">
-                <div class="col-lg-6 parallax-content" data-aos="fade-right">
-                    <h1 class="display-4 fw-bold mb-4">Boston's Premier<br><span class="gradient-text">Laundry Service</span></h1>
-                    <p class="lead mb-4">Experience premium wash, dry & fold service in Boston. Drop off your laundry and pick it up fresh and folded!</p>
-                    <button class="btn btn-custom btn-lg" data-bs-toggle="modal" data-bs-target="#scheduleModal">
-                        Get Started →
-                    </button>
-                </div>
-                <div class="col-lg-6 parallax-content" data-aos="fade-left">
-                    <img src="/api/placeholder/600/600" alt="Laundry Service" class="img-fluid rounded-circle">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="py-5">
-        <div class="container">
-            <div class="row-gradient mb-5">
-                <h2 class="text-center gradient-text mb-4">Our Services</h2>
-                <div class="row g-4">
-                    <div class="col-md-4" data-aos="flip-left">
-                        <div class="service-card p-4">
-                            <h3>Wash & Fold</h3>
-                            <p>Professional service with premium detergents</p>
-                            <button class="btn btn-custom w-100">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="col-md-4" data-aos="flip-left" data-aos-delay="100">
-                        <div class="service-card p-4">
-                            <h3>Same Day Service</h3>
-                            <p>Express service for urgent needs</p>
-                            <button class="btn btn-custom w-100">Learn More</button>
-                        </div>
-                    </div>
-                    <div class="col-md-4" data-aos="flip-left" data-aos-delay="200">
-                        <div class="service-card p-4">
-                            <h3>Pickup & Delivery</h3>
-                            <p>Convenient door-to-door service</p>
-                            <button class="btn btn-custom w-100">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal -->
-    <div class="modal fade" id="scheduleModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <form class="schedule-form">
-                        <h3 class="text-center gradient-text mb-4">Schedule Your Pickup</h3>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Full Name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" placeholder="Email" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="tel" class="form-control" placeholder="Phone" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Address" required>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-custom w-100">Schedule Now</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true
-        });
-
-        // Loading Screen
-        window.addEventListener('load', function() {
-            document.querySelector('.loader').style.display = 'none';
-        });
-
-        // Parallax Effect
-        document.addEventListener('mousemove', function(e) {
-            const parallaxItems = document.querySelectorAll('.parallax-content');
-            parallaxItems.forEach(item => {
-                const speed = 0.01;
-                const x = (window.innerWidth - e.pageX * speed) / 100;
-                const y = (window.innerHeight - e.pageY * speed) / 100;
-                item.style.transform = `translateX(${x}px) translateY(${y}px)`;
-            });
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-  ```css
-/* Add these new styles to the existing CSS */
-
-/* Glassmorphism Nav Menu */
+        /* Glassmorphism Nav Menu */
 .nav-glass {
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -528,6 +368,163 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-      <div class="progress-bar"></div>
+    </style>
+</head>
+<body>
+    <!-- Floating Clouds -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <!-- Loading Animation -->
+    <div class="loader">
+        <div class="loader-inner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand gradient-text" href="#">BostonWashFold</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-custom ms-2" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                            Schedule Now
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center parallax-section">
+                <div class="col-lg-6 parallax-content" data-aos="fade-right">
+                    <h1 class="display-4 fw-bold mb-4">Boston's Premier<br><span class="gradient-text">Laundry Service</span></h1>
+                    <p class="lead mb-4">Experience premium wash, dry & fold service in Boston. Drop off your laundry and pick it up fresh and folded!</p>
+                    <button class="btn btn-custom btn-lg" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                        Get Started →
+                    </button>
+                </div>
+                <div class="col-lg-6 parallax-content" data-aos="fade-left">
+                    <img src="/api/placeholder/600/600" alt="Laundry Service" class="img-fluid rounded-circle">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <div class="row-gradient mb-5">
+                <h2 class="text-center gradient-text mb-4">Our Services</h2>
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="flip-left">
+                        <div class="service-card p-4">
+                            <h3>Wash & Fold</h3>
+                            <p>Professional service with premium detergents</p>
+                            <button class="btn btn-custom w-100">Learn More</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="flip-left" data-aos-delay="100">
+                        <div class="service-card p-4">
+                            <h3>Same Day Service</h3>
+                            <p>Express service for urgent needs</p>
+                            <button class="btn btn-custom w-100">Learn More</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="flip-left" data-aos-delay="200">
+                        <div class="service-card p-4">
+                            <h3>Pickup & Delivery</h3>
+                            <p>Convenient door-to-door service</p>
+                            <button class="btn btn-custom w-100">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="scheduleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <form class="schedule-form">
+                        <h3 class="text-center gradient-text mb-4">Schedule Your Pickup</h3>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Full Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" class="form-control" placeholder="Phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Address" required>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-custom w-100">Schedule Now</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="progress-bar"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Loading Screen
+        window.addEventListener('load', function() {
+            document.querySelector('.loader').style.display = 'none';
+        });
+
+        // Parallax Effect
+        document.addEventListener('mousemove', function(e) {
+            const parallaxItems = document.querySelectorAll('.parallax-content');
+            parallaxItems.forEach(item => {
+                const speed = 0.01;
+                const x = (window.innerWidth - e.pageX * speed) / 100;
+                const y = (window.innerHeight - e.pageY * speed) / 100;
+                item.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
