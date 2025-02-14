@@ -13,12 +13,13 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
+            z-index: 0;
+            touch-action: none;
         }
         .content-overlay {
             position: relative;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
             min-height: 100vh;
             color: white;
         }
@@ -58,6 +59,7 @@
     <canvas id="renderCanvas"></canvas>
     
     <div class="content-overlay">
+        <!-- [Previous navbar code remains the same] -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container">
                 <a class="navbar-brand solana-gradient" href="#">SolanaMemeCoins.cash</a>
@@ -122,38 +124,68 @@
 
             const createScene = function() {
                 const scene = new BABYLON.Scene(engine);
-                scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+                scene.clearColor = new BABYLON.Color4(0.05, 0.05, 0.1, 1);
 
-                const camera = new BABYLON.ArcRotateCamera("camera", 0, Math.PI / 3, 10, BABYLON.Vector3.Zero(), scene);
+                // Create a more dynamic camera
+                const camera = new BABYLON.ArcRotateCamera("camera", 0, Math.PI / 3, 20, BABYLON.Vector3.Zero(), scene);
+                camera.setPosition(new BABYLON.Vector3(0, 5, -20));
                 camera.attachControl(canvas, true);
+                camera.lowerRadiusLimit = 10;
+                camera.upperRadiusLimit = 30;
 
-                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+                // Enhanced lighting
+                const mainLight = new BABYLON.HemisphericLight("mainLight", new BABYLON.Vector3(0, 1, 0), scene);
+                mainLight.intensity = 0.7;
+                
+                const pointLight = new BABYLON.PointLight("pointLight", new BABYLON.Vector3(0, 5, -5), scene);
+                pointLight.intensity = 0.5;
 
-                // Create floating coins
-                for (let i = 0; i < 15; i++) {
-                    const coin = BABYLON.MeshBuilder.CreateCylinder("coin" + i, {
-                        height: 0.1,
-                        diameter: 2,
+                // Create more prominent coins
+                for (let i = 0; i < 20; i++) {
+                    // Create coin face detail
+                    const coinFace = BABYLON.MeshBuilder.CreateDisc("coinFace", {
+                        radius: 1.5,
+                        tessellation: 32
                     }, scene);
                     
-                    // Random position
+                    // Create coin edge
+                    const coinEdge = BABYLON.MeshBuilder.CreateCylinder("coinEdge", {
+                        height: 0.2,
+                        diameter: 3,
+                        tessellation: 32
+                    }, scene);
+                    
+                    // Merge coin parts
+                    const coin = BABYLON.Mesh.MergeMeshes([coinFace, coinEdge], true);
+                    
+                    // Random position in a more confined space
                     coin.position = new BABYLON.Vector3(
-                        Math.random() * 20 - 10,
-                        Math.random() * 20 - 10,
-                        Math.random() * 20 - 10
+                        Math.random() * 16 - 8,
+                        Math.random() * 16 - 8,
+                        Math.random() * 16 - 8
                     );
 
-                    // Create golden material
+                    // Enhanced material
                     const coinMaterial = new BABYLON.StandardMaterial("coinMaterial" + i, scene);
                     coinMaterial.diffuseColor = new BABYLON.Color3(1, 0.8, 0);
                     coinMaterial.specularColor = new BABYLON.Color3(1, 1, 1);
+                    coinMaterial.specularPower = 32;
                     coinMaterial.emissiveColor = new BABYLON.Color3(0.4, 0.3, 0);
+                    coinMaterial.metallicTexture = new BABYLON.Texture("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==", scene);
+                    coinMaterial.metallic = 0.8;
+                    coinMaterial.roughness = 0.3;
                     coin.material = coinMaterial;
 
-                    // Animation
+                    // Enhanced animation
+                    const rotationSpeed = 0.005 + Math.random() * 0.01;
+                    const floatSpeed = 0.0007 + Math.random() * 0.0005;
+                    const floatRange = 0.5 + Math.random() * 0.5;
+                    const startingHeight = coin.position.y;
+
                     scene.registerBeforeRender(() => {
-                        coin.rotation.y += 0.01;
-                        coin.position.y = coin.position.y + Math.sin(Date.now() * 0.001 + i) * 0.01;
+                        coin.rotation.y += rotationSpeed;
+                        coin.rotation.x = Math.PI / 2;
+                        coin.position.y = startingHeight + Math.sin(Date.now() * floatSpeed) * floatRange;
                     });
                 }
 
