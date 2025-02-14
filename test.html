@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolanaMemeCoins.cash - Premium Meme Coin Signals</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babylon.js/6.16.0/babylon.js"></script>
+    <style>
+        #renderCanvas {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .content-overlay {
+            position: relative;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            min-height: 100vh;
+            color: white;
+        }
+        .hero-section {
+            padding-top: 150px;
+            padding-bottom: 100px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #9945FF, #14F195);
+            border: none;
+            padding: 12px 30px;
+        }
+        .solana-gradient {
+            background: linear-gradient(45deg, #9945FF, #14F195);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    
+    <div class="content-overlay">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand solana-gradient" href="#">SolanaMemeCoins.cash</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#signals">Signals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pricing">Pricing</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="container text-center">
+                <h1 class="display-3 mb-4">Premium Solana Meme Coin Signals</h1>
+                <p class="lead mb-4">Stay ahead of the curve with AI-powered meme coin analysis and real-time trading signals</p>
+                <button class="btn btn-primary btn-lg">Get Started Now</button>
+            </div>
+        </section>
+
+        <section id="features" class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h3>AI Analysis</h3>
+                            <p>Advanced algorithms analyzing social sentiment and market dynamics</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h3>Real-time Alerts</h3>
+                            <p>Instant notifications for promising meme coin opportunities</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <h3>Community Insights</h3>
+                            <p>Exclusive access to expert traders and market analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('renderCanvas');
+            const engine = new BABYLON.Engine(canvas, true);
+
+            const createScene = function() {
+                const scene = new BABYLON.Scene(engine);
+                scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+
+                const camera = new BABYLON.ArcRotateCamera("camera", 0, Math.PI / 3, 10, BABYLON.Vector3.Zero(), scene);
+                camera.attachControl(canvas, true);
+
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+                // Create floating coins
+                for (let i = 0; i < 15; i++) {
+                    const coin = BABYLON.MeshBuilder.CreateCylinder("coin" + i, {
+                        height: 0.1,
+                        diameter: 2,
+                    }, scene);
+                    
+                    // Random position
+                    coin.position = new BABYLON.Vector3(
+                        Math.random() * 20 - 10,
+                        Math.random() * 20 - 10,
+                        Math.random() * 20 - 10
+                    );
+
+                    // Create golden material
+                    const coinMaterial = new BABYLON.StandardMaterial("coinMaterial" + i, scene);
+                    coinMaterial.diffuseColor = new BABYLON.Color3(1, 0.8, 0);
+                    coinMaterial.specularColor = new BABYLON.Color3(1, 1, 1);
+                    coinMaterial.emissiveColor = new BABYLON.Color3(0.4, 0.3, 0);
+                    coin.material = coinMaterial;
+
+                    // Animation
+                    scene.registerBeforeRender(() => {
+                        coin.rotation.y += 0.01;
+                        coin.position.y = coin.position.y + Math.sin(Date.now() * 0.001 + i) * 0.01;
+                    });
+                }
+
+                return scene;
+            }
+
+            const scene = createScene();
+
+            engine.runRenderLoop(function() {
+                scene.render();
+            });
+
+            window.addEventListener('resize', function() {
+                engine.resize();
+            });
+        });
+    </script>
+</body>
+</html>
